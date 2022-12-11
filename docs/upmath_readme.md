@@ -88,11 +88,11 @@ Math rendering in Docupy is very similar to that seen in Latex, with a few chang
 <span class="rb">`</span>myVar = 5<span class="rb">`</span> <span class="comment">                             # single `` denotes inline code snip </span>
 </pre>
 
-> <br><span style="font-family:times">The sum of the first</span> $n$ <span style="font-family:times">integers is</span>
-> $\sum_i^n i = \frac{n(n-1)}{2}$.
+> <br><span style="font-family:times">The sum of the first</span> $$\color{white}n$$ <span style="font-family:times">integers is</span>
+> $$\color{white}\textstyle\sum_i^n i = \frac{n(n-1)}{2}$$.
 > <hr>
 >
-> $$\cos \Big(\frac{\pi}{2} \Big) = 0$$
+> $$\color{white}\cos \Big(\frac{\pi}{2} \Big) = 0$$
 > <p style="font-family:times;text-align: center;">A trig identity.</p>
 > <hr>
 >
@@ -116,9 +116,9 @@ Variables and functions can be used to produce dynamic text rendering.
 <span class="cmd">\list</span><span class="ct">{</span><span class="rb">"</span>Option 1: <span class="rb">$</span>e<span class="pl">_</span>5<span class="rb">$</span> <span class="ct">|</span> Option 2: <span class="cmd">\myVar</span> <span class="ct">|</span> Option 3: <span class="cmd">\myArray</span><span class="op">[</span>1<span class="op">]</span><span class="rb">"</span><span class="ct">}</span>
 </pre>
 
-> <span style="font-family:times">- Option 1: </span> $e_5$</br>
-> <span style="font-family:times">- Option 2: </span> $a_1$</br>
-> <span style="font-family:times">- Option 3: </span> $c_3$
+> <span style="font-family:times">- Option 1: </span> $$\color{white}e_5$$</br>
+> <span style="font-family:times">- Option 2: </span> $$\color{white}a_1$$</br>
+> <span style="font-family:times">- Option 3: </span> $$\color{white}c_3$$
 
 <br>
 <br>
@@ -147,10 +147,10 @@ Text from other documents can be imported with the following command. There is a
    - Multiple snips may be contained within a **group**. Groups and spips alike can get "packed" or "gridded" into the document during rendering.
 
 ### Render Brackets for Text-Like Render Types
-   - There are three **text-like render types** in Docupy: <span style="font-family:times;font-size:18px">text</span>, $math$ and <span style="font-family:consolas;font-size:16px;background:#CACACA;color:black;border-radius:5px;padding-left:4px;padding-right:4px;">code</span>. Each of these 
+   - There are three **text-like render types** in Docupy: <span style="font-family:times;font-size:18px">text</span>, $$\color{white}math$$ and <span style="font-family:consolas;font-size:16px;background:#CACACA;color:black;border-radius:5px;padding-left:4px;padding-right:4px;">code</span>. Each of these 
      have associated **render brackets**, listed below, that are used to set the content's render type. All typed text must be inside one of these render brackets to show up on the document. Nesting of render brackets is allowed.
        - `"abc"` for <span style="font-family:times;font-size:18px">text</span> rendering
-       - `$abc$` for $math$ rendering
+       - `$abc$` for $$\color{white}math$$ rendering
        - `` `abc` `` for <span style="font-family:consolas;font-size:16px;background:#CACACA;color:black;border-radius:5px;padding-left:4px;padding-right:4px;">code</span> rendering
 
 ### Basic `.dp` Rules
@@ -167,7 +167,7 @@ Text from other documents can be imported with the following command. There is a
    - Names of variables and functions have the same rules as Python does, except underscores are not allowed. All names must be preceded with a `\`.
    - Assignment is done with the assignment operator: `<-`&nbsp;. The assignment operator "silences" the output of the code on the right of it (i.e., keeps if from being rendered to the document), and instead stores its output into the variable to be used later.
    - Users can define **variables** outside of render brackets. For example, the following line 
-     would save the snip $a_c$ to the variable `\myVar`&nbsp;: 
+     would save the snip $$\color{white}a_c$$ to the variable `\myVar`&nbsp;: 
      
      `\myVar <- $a_c$`
 
@@ -177,7 +177,7 @@ Text from other documents can be imported with the following command. There is a
      
      ... Docupy would render the following:
 
-     > <span style="font-family:times;font-size:16px">The value of </span> $a_c$ <span style="font-family:times;font-size:16px">is small.</span>
+     > <span style="font-family:times;font-size:16px">The value of </span> $$\color{white}a_c$$ <span style="font-family:times;font-size:16px">is small.</span>
 
 ### Functions
 
@@ -233,7 +233,7 @@ Text from other documents can be imported with the following command. There is a
      `[$a | b$ | $c | d$]`
 
      `$a | b \\ c | d$`
-- Arrays can be indexed using `[]`.  For example, the code below would return $b_k$ :
+- Arrays can be indexed using `[]`.  For example, the code below would return $$\color{white}b_k$$ :
 
     `[$a_k$ | $b_k$ | $c_k$][1]`
 
@@ -333,7 +333,7 @@ These data types are most often used in option arguments. Most of them are rarel
 ### Render Types
 Below, all but `group` are types of snips.
 - `text`: <span style="font-family:times;font-size:18px">text</span> content. Make with `""` render brackets.
-- `math`: $math$ content. Make with `$$` render brackets.
+- `math`: $$\color{white}math$$ content. Make with `$$` render brackets.
 - `code`: <span style="font-family:consolas;font-size:16px;background:#CACACA;color:black;border-radius:5px;padding-left:4px;padding-right:4px;">code</span> content. Make with ` `` ` render brackets.
 - `image`: Image content.
 - `graphic`: Vector graphic content.

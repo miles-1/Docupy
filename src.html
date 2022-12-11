@@ -1,0 +1,337 @@
+<!-- https://upmath.me/ to convert to html-->
+<style>
+    body {
+        font-family: 'Segoe UI';
+        background: #1E1E1E;
+        color: #D4D4D4;
+    }
+    pre {
+        background: #000000;
+        border-radius: 5px;
+        padding: 15px;
+        margin-left: 10px;
+        margin-right: 10px;
+        white-space: pre-wrap;
+        font-family: "consolas"; 
+    }
+    code {
+        color: #E4EA98;
+    }
+    blockquote {
+        background: #111111;
+        border-radius: 5px;
+        padding: 5px;
+    }
+    .rb {
+        color: #4EC9B0;
+    }
+    .cmd {
+        color: #569CD6;
+    }
+    .op {
+        color: #FF8ED2;
+    }
+    .ct {
+        color: #DA70D6;
+    }
+    .pl {
+        color: #FFD700;
+    }
+    .comment {
+        color: #57A64A;
+        font-style: italic;
+    }
+</style>
+<hr>
+<h1>Docupy, a typesetting script language</h1>
+<p><em>Miles Robertson, 12/10/22</em></p>
+<br>
+<hr>
+<br>
+<h2>Intro</h2>
+<p><strong>Docupy</strong> is a tex-like, function-based typesetting script language that implements the following features:</p>
+<ul>
+<li>in-document python scripting for content generation</li>
+<li>user-defined variables and functions</li>
+<li>novice-friendly error messages</li>
+<li>simplified, template-free syntax with reduced need package imports</li>
+<li>exporting to HTML and PDF</li>
+</ul>
+<br>
+<hr>
+<br>
+<h2>Examples</h2>
+<h3>Text, Math and Code Rendering</h3>
+<p>Math rendering in Docupy is very similar to that seen in Latex, with a few changes to make syntax more consistent.</p>
+<pre>
+<span class="rb">"</span>The sum of the first <span class="rb">$</span>n<span class="rb">$</span> integers is <span class="rb">"</span> <span class="comment"> # single "" denotes inline text snip </span>
+<span class="rb">$</span><span class="cmd">\sum</span><span class="pl">_</span>i<span class="pl">^</span>n i = <span class="cmd">\frac</span><span class="ct">{</span>n(n-1) <span class="ct">|</span> 2<span class="ct">}</span>.<span class="rb">$</span> <span class="comment">       # single $$ denotes inline math snip </span>
+<span class="cmd">\hline</span> <span class="comment">                                  # horizontal line</span>
+<span class="rb">$$</span><span class="cmd">\cos</span>(<span class="cmd">\frac</span><span class="ct">{</span><span class="cmd">\pi</span> <span class="ct">|</span> 2<span class="ct">}</span>) = 0<span class="rb">$$</span> <span class="comment">            # double $$ denotes block math snip </span>
+<span class="rb">""</span>A trig identity.<span class="rb">""</span> <span class="comment">                    # double "" denotes block text snip </span>
+<span class="cmd">\hline</span>
+<span class="rb">`</span>myVar = 5<span class="rb">`</span> <span class="comment">                             # single `` denotes inline code snip </span>
+</pre>
+<blockquote>
+<p><br><span style="font-family:times">The sum of the first</span> <img src="https://i.upmath.me/svg/%5Ccolor%7Bwhite%7Dn" alt="\color{white}n" /> <span style="font-family:times">integers is</span>
+<img src="https://i.upmath.me/svg/%5Ccolor%7Bwhite%7D%5Ctextstyle%5Csum_i%5En%20i%20%3D%20%5Cfrac%7Bn(n-1)%7D%7B2%7D" alt="\color{white}\textstyle\sum_i^n i = \frac{n(n-1)}{2}" />.</p>
+<hr>
+<p align="center"><img align="center" src="https://i.upmath.me/svg/%5Ccolor%7Bwhite%7D%5Ccos%20%5CBig(%5Cfrac%7B%5Cpi%7D%7B2%7D%20%5CBig)%20%3D%200" alt="\color{white}\cos \Big(\frac{\pi}{2} \Big) = 0" /></p>
+<p style="font-family:times;text-align: center;">A trig identity.</p>
+<hr>
+<p><code>myVar = 5</code></p>
+<br>
+</blockquote>
+<br>
+<br>
+<h3>Variables and Functions in Text Rendering</h3>
+<p>Variables and functions can be used to produce dynamic text rendering.</p>
+<pre>
+<span class="comment"># set a user-defined snip variable </span>
+<span class="cmd">\myVar</span> <span class="pl"><-</span> <span class="rb">$</span>a<span class="pl">_</span>1<span class="rb">$</span> 
+<span class="comment"># set a user-defined array variable </span>
+<span class="cmd">\myArray</span> <span class="pl"><-</span> <span class="rb">$</span>b<span class="pl">_</span>2 <span class="rb">|</span> c<span class="pl">_</span>3<span class="rb"> | </span>d<span class="pl">_</span>4<span class="rb">$</span>
+<span class="comment"># render list </span>
+<span class="cmd">\list</span><span class="ct">{</span><span class="rb">"</span>Option 1: <span class="rb">$</span>e<span class="pl">_</span>5<span class="rb">$</span> <span class="ct">|</span> Option 2: <span class="cmd">\myVar</span> <span class="ct">|</span> Option 3: <span class="cmd">\myArray</span><span class="op">[</span>1<span class="op">]</span><span class="rb">"</span><span class="ct">}</span>
+</pre>
+<blockquote>
+<p><span style="font-family:times">- Option 1: </span> <img src="https://i.upmath.me/svg/%5Ccolor%7Bwhite%7De_5" alt="\color{white}e_5" /></br>
+<span style="font-family:times">- Option 2: </span> <img src="https://i.upmath.me/svg/%5Ccolor%7Bwhite%7Da_1" alt="\color{white}a_1" /></br>
+<span style="font-family:times">- Option 3: </span> <img src="https://i.upmath.me/svg/%5Ccolor%7Bwhite%7Dc_3" alt="\color{white}c_3" /></p>
+</blockquote>
+<br>
+<br>
+<h3>Importing text from external documents</h3>
+<p>Text from other documents can be imported with the following command. There is also support for user-defined functions that are written in Python.</p>
+<pre>
+<span class="comment"># imports content from document as text </span>
+<span class="cmd">\docContents</span> <span class="pl"><-</span><span class="cmd">\importText</span><span class="ct">{</span>my_text_file.txt<span class="ct">}</span>
+</pre>
+<br>
+<br>
+<hr>
+<br>
+<h2>Structure and Syntax</h2>
+<h3>Snips, Groups and Render Types</h3>
+<ul>
+<li>Conceptually, the basic unit of document content is a <strong>snip</strong>. This can be a paragraph of text, a math equation, a code snippet, an image, etc.</li>
+<li><strong>Render types</strong> describe the class of snip (e.g., image, text, graphic, etc.). A snip can only have a single render type.</li>
+<li>Multiple snips may be contained within a <strong>group</strong>. Groups and spips alike can get &quot;packed&quot; or &quot;gridded&quot; into the document during rendering.</li>
+</ul>
+<h3>Render Brackets for Text-Like Render Types</h3>
+<ul>
+<li>There are three <strong>text-like render types</strong> in Docupy: <span style="font-family:times;font-size:18px">text</span>, <img src="https://i.upmath.me/svg/%5Ccolor%7Bwhite%7Dmath" alt="\color{white}math" /> and <span style="font-family:consolas;font-size:16px;background:#CACACA;color:black;border-radius:5px;padding-left:4px;padding-right:4px;">code</span>. Each of these
+have associated <strong>render brackets</strong>, listed below, that are used to set the content’s render type. All typed text must be inside one of these render brackets to show up on the document. Nesting of render brackets is allowed.
+<ul>
+<li><code>&quot;abc&quot;</code> for <span style="font-family:times;font-size:18px">text</span> rendering</li>
+<li><code>$abc$</code> for <img src="https://i.upmath.me/svg/%5Ccolor%7Bwhite%7Dmath" alt="\color{white}math" /> rendering</li>
+<li><code>`abc`</code> for <span style="font-family:consolas;font-size:16px;background:#CACACA;color:black;border-radius:5px;padding-left:4px;padding-right:4px;">code</span> rendering</li>
+</ul>
+</li>
+</ul>
+<h3>Basic <code>.dp</code> Rules</h3>
+<ul>
+<li><strong>Docupy renders <code>.dp</code> files</strong>, which are plain text documents, to <code>.html</code> <em>(default)</em> or <code>.pdf</code>.</li>
+<li>Documents require <strong>no special structure</strong> to set type onto the produced document (such as tex’s <code>\begin{document}...\end{document}</code> or HTML’s <code>&lt;html&gt;...&lt;/html&gt;</code>).</li>
+<li>Multiple <strong>spaces</strong> are treated as a single space by Docupy wherever they are found in <code>.dp</code> files. More spaces in content can be added by using <code>\s</code> . Likewise, multiple <strong>new lines</strong> between lines of code are changed to single new lines in <code>.dp</code> files, but in addition, are completely removed from any content. New lines in content can be added by using <code>\\</code> .</li>
+<li><code>.dp</code> files consist of a series of commands. These commands perform one of the following:
+<ul>
+<li><strong>Content Rendering</strong>: this command type places content onto the rendered document. <!-- (or, as said [above](#snips-and-boxes), they *pack groups* into the document). --></li>
+<li><strong>Content Setup</strong>: this command type prepares content to be rendered later. This can include changing the document format, setting variables, running Python code, etc.</li>
+</ul>
+</li>
+</ul>
+<h3>Namespace, Variables and Assignment</h3>
+<ul>
+<li>
+<p>Names of variables and functions have the same rules as Python does, except underscores are not allowed. All names must be preceded with a <code>\</code>.</p>
+</li>
+<li>
+<p>Assignment is done with the assignment operator: <code>&lt;-</code> . The assignment operator &quot;silences&quot; the output of the code on the right of it (i.e., keeps if from being rendered to the document), and instead stores its output into the variable to be used later.</p>
+</li>
+<li>
+<p>Users can define <strong>variables</strong> outside of render brackets. For example, the following line
+would save the snip <img src="https://i.upmath.me/svg/%5Ccolor%7Bwhite%7Da_c" alt="\color{white}a_c" /> to the variable <code>\myVar</code> :</p>
+<p><code>\myVar &lt;- $a_c$</code></p>
+<p>After this line, <code>myVar</code> is added to the namespace of the document and can be used inside render brackets. Thus, for this line of code…</p>
+<p><code>&quot;The value of \myVar is small.&quot;</code></p>
+<p>… Docupy would render the following:</p>
+<blockquote>
+<p><span style="font-family:times;font-size:16px">The value of </span> <img src="https://i.upmath.me/svg/%5Ccolor%7Bwhite%7Da_c" alt="\color{white}a_c" /> <span style="font-family:times;font-size:16px">is small.</span></p>
+</blockquote>
+</li>
+</ul>
+<h3>Functions</h3>
+<ul>
+<li>
+<p><strong>Functions</strong> can be called outside or inside of render brackets, and produce a snip as output.</p>
+</li>
+<li>
+<p>There are two types of arguments that can be passed to functions: <strong>options</strong> (passed with <code>[]</code>) and <strong>content</strong> (passed with <code>{}</code>). Arguments are separated using <code>|</code>, whether or not it is within render brackets. For example, the following two lines of code…</p>
+<p><code>\list[marker='right_tri' | size=12px]{&quot;Option 1 | Option 2 | Option 3&quot;}</code></p>
+<p><code>&quot;\list[marker='right_tri' | size=12px]{Option 1 | Option 2 | Option 3}&quot;</code></p>
+<p>… would both equivalently render as:</p>
+<blockquote>
+<p><span style="font-family:times;font-size:12px">▸ Option 1</span></br>
+<span style="font-family:times;font-size:12px">▸ Option 2</span></br>
+<span style="font-family:times;font-size:12px">▸ Option 3</span></p>
+</blockquote>
+<ul>
+<li>The <em>option</em> argumenmts allow users to specify visual properties of the output. Option arguments are often not required to use since they usually have defaults, but these defaults can be overwritten by using the form <code>optionsArgument=[new value here]</code>.</li>
+<li>The <em>content</em> arguments are often text-like, or sometimes include several lines of code. Either way, content arguments will produce some output that the function then processes. If content arguments are used, then the</li>
+</ul>
+</li>
+<li>
+<p>If a function requires no options (or arguments) when it is being called, the <code>[]</code> (or the <code>{}</code>) can be omitted or included with no difference in result.</p>
+</li>
+<li>
+<p>Technically, in Docupy, <em>variables are functions with no arguments</em> that return content.</p>
+</li>
+</ul>
+<h3>Arrays</h3>
+<ul>
+<li>
+<p><strong>Arrays</strong> in Docupy are ordered collections of content, and have a fixed length. Generally, arrays are defined using <code>[]</code> around and as follows:</p>
+<p><code>[\myVar | &quot;second entry&quot; | $K^2$]</code></p>
+<p>However, if an array contains only text-like content of the same render type, then the two following lines define two equivalent arrays, the second a shorthand for the first:</p>
+<p><code>[$a_k$ | $b_k$ | $c_k$]</code></p>
+<p><code>$a_k | b_k | c_k$</code></p>
+</li>
+<li>
+<p>If an array is passed to a function in <code>{}</code>, then each element in the array is interpreted as a separate argument. This means that the following three lines of code produce the same result, which is shown below:</p>
+<p><code>&quot;\list{Option 1 | Option 2 | Option 3}&quot;</code></p>
+<p><code>\list{&quot;Option 1 | Option 2 | Option 3&quot;}</code></p>
+<p><code>\list{[&quot;Option 1&quot; | &quot;Option 2&quot; | &quot;Option 3&quot;]}</code></p>
+<blockquote>
+<p><span style="font-family:times">- Option 1</span></br>
+<span style="font-family:times">- Option 2</span></br>
+<span style="font-family:times">- Option 3</span></p>
+</blockquote>
+</li>
+<li>
+<p>In cases where two-dimensional arrays are useful, such as matrices or tables, then rows within render brackets can be separated with <code>\\</code>. Thus, all of the following produce identical two-dimensional arrays (though the second is not recommended as it mixes the two syntaxes and is therefore somewhat confusing):</p>
+<p><code>[[$a$ | $b$] | [$c$ | $d$]]</code></p>
+<p><code>[$a | b$ | $c | d$]</code></p>
+<p><code>$a | b \\ c | d$</code></p>
+</li>
+<li>
+<p>Arrays can be indexed using <code>[]</code>.  For example, the code below would return <img src="https://i.upmath.me/svg/%5Ccolor%7Bwhite%7Db_k" alt="\color{white}b_k" /> :</p>
+<p><code>[$a_k$ | $b_k$ | $c_k$][1]</code></p>
+</li>
+</ul>
+<h3>Display settings and More on Rendering Brackets</h3>
+<ul>
+<li>Snips or groups of snips can have different display settings, e.g., to keep within the line of text, or to break out into the next available space below, etc. The possible <code>display</code> values are <code>Inline</code>, <code>Block</code>, <code>Inline-Block</code> and <code>Full</code>, the first three being from HTML and the last indicating that the snip or group will be placed with full width and block display on the next page.</li>
+<li>For text-like render types, some of these display settings can be set using the corresponding render bracket multiple times:
+<ul>
+<li>Single use for <code>Inline</code> (e.g., <code>&quot;hello this is inline&quot;</code>)</li>
+<li>Double use for <code>Block</code> (e.g., <code>$$y=mx+b$$</code>)</li>
+<li>Triple use for <code>Full</code> (e.g., <code>```code goes here```</code>)</li>
+</ul>
+</li>
+<li>Alternatively, <code>display</code> values (along with font settings) can also be set using the option argument notation: <code>[display=InlineBlock | fontSize=]</code></li>
+</ul>
+<br>
+<hr>
+<br>
+<h2>Default Namespace</h2>
+<p>Below is a list of functions (and their uses) that populate the namespace by default. This will likely change and increase during development. If an option argument is optional, its default value is indicated using <code>=</code>. If multiple content arguments are possible, the argument name is preceded by a <code>*</code>.</p>
+<ul>
+<li>
+<p><code>\\</code> : Add new line character. This ends the current line of text (if applicable) and adds a gap below the content.</p>
+<p><em>Option arguments: <code>[gapSize=1]</code>. No content arguments.</em></p>
+</li>
+<li>
+<p><code>\t</code> : Add tab (or horizontal space). This adds a horizontal space.</p>
+<p><em>Option arguments: <code>[gapSize=1]</code>. No content arguments.</em></p>
+</li>
+<li>
+<p><code>\title</code> : Adds title to document.</p>
+<p><em>Option arguments: <code>[size=16px | align=Center]</code>. Content arguments: <code>{title | *subtitles}</code>.</em></p>
+</li>
+<li>
+<p><code>\section</code> : Adds a section header. Name and ocurring page automatically logged for <code>\contents</code> function.</p>
+<p><em>Option arguments: <code>[size=14px | number=None | align=Center]</code>. Content arguments: <code>{title | *subtitles}</code>.</em></p>
+</li>
+<li>
+<p><code>\subsection</code> : Adds a subsection header. Name and ocurring page automatically logged for <code>\contents</code> function.</p>
+<p><em>Option arguments: <code>[size=14px | number=None | align=Center]</code>. Content arguments: <code>{title | *subtitles}</code>.</em></p>
+</li>
+<li>
+<p><code>\columns</code> : Breaks content argument into multiple columns. <code>\columnbreak</code> is required inside of content.</p>
+<p><em>Option arguments: <code>[num=2 | hAlign=Up | ratios=[1|1]]</code>. Content arguments: <code>{content}</code>.</em></p>
+</li>
+<li>
+<p><code>\columnbreak</code> : Specifies where column break should be.</p>
+<p><em>No option or content arguments.</em></p>
+</li>
+<li>
+<p><code>\image</code> : Include an image. <em>Note:</em> <code>path</code> argument must use text render brackets <code>&quot;&quot;</code>.</p>
+<p><em>Option arguments: <code>[scale=1 | vAlign=Center]</code>. Content arguments: <code>{path}</code></em></p>
+</li>
+<li>
+<p><code>\pack</code> : Specify the size and placement of the content.</p>
+<p><em>Option arguments: <code>[width=1 | height=1 | allowPageBreak=True | borderWidth=0 | borderColor=0 | margin=0 | padding=0 | packAlign=Left | contentAlign=Left]</code>. Content arguments: <code>{content}</code>.</em></p>
+</li>
+<li>
+<p><code>\group</code> : Used to collect several snips into one group. Allows size specification, and used for subscripting functions.</p>
+<p><em>Option arguments: <code>[width=1 | height=1 | allowPageBreak=True | borderWidth=0 | borderColor=0 | margin=0 | padding=0 | groupAlign=Left | contentAlign=Left]</code>. Content arguments: <code>{content}</code>.</em></p>
+</li>
+<li>
+<p><code>\caption</code> : Used as a subscript to <code>\group</code>, <code>\image</code> or other content to add a caption.</p>
+<p><em>Option arguments: <code>[caption='Fig' | number=True | bold=True]</code>. Content arguments: <code>{caption}</code>.</em></p>
+</li>
+<li>
+<p><code>\transpose</code> : Get the transpose of a two-dimensional array.</p>
+<p><em>Option arguments: <code>[array]</code>. No content arguments.</em></p>
+</li>
+<li>
+<p><code>\runCode</code> : Run pure python code inside of this command. Any python scripting has complete read/write access to document namespace by dropping the <code>\</code> before each name. <em>Note:</em> any variables in the python code with underscores are converted to camel case in the document namespace, possibly over-writing other variables if poorly named.</p>
+<p><em>Option arguments: <code>[render=False]</code>. Content arguments: <code>{content}</code>.</em></p>
+</li>
+</ul>
+<br>
+<hr>
+<br>
+<h2>Data Types</h2>
+<h3>Basic Types</h3>
+<p>These data types are most often used in option arguments. Most of them are rarely used elsewhere.</p>
+<ul>
+<li><code>bool</code>: Python boolean. Either <code>True</code> or <code>False</code>.</li>
+<li><code>int</code>: Python integer.</li>
+<li><code>float</code>: Python float.</li>
+<li><code>position</code>: Indicates relative positioning. One of the following:
+<ul>
+<li><code>N</code>, <code>S</code>, <code>E</code>, <code>W</code>, <code>NE</code>, <code>NW</code>, <code>SE</code>, <code>SW</code>.</li>
+<li><code>Left</code>, <code>South</code>, <code>Up</code>, <code>Down</code>, <code>Center</code> or their first letters.</li>
+</ul>
+</li>
+<li><code>color</code>: Color value in the form of hexadecimal.
+<ul>
+<li>Written in the form <code>+000000</code>.</li>
+<li>Make <code>color</code> from <code>int</code>s using <code>\hexColor</code> function.</li>
+</ul>
+</li>
+<li><code>display</code>: HTML-like display values. One of the following:
+<ul>
+<li><code>Inline</code>, <code>Block</code>, <code>InlineBlock</code>, <code>Full</code></li>
+</ul>
+</li>
+<li><code>array</code>: One- or two-dimensional array as defined above.</li>
+<li><code>ministr</code>: Short fragment of text, often for caption formatting. Can be any length, but not meant to be long. Denoted by <code>''</code>.
+<ul>
+<li>Examples: <code>'Fig'</code>, <code>'Table'</code>, <code>'Graph'</code>, etc.</li>
+</ul>
+</li>
+<li><code>nonetype</code>: The type of <code>None</code>.</li>
+</ul>
+<h3>Render Types</h3>
+<p>Below, all but <code>group</code> are types of snips.</p>
+<ul>
+<li><code>text</code>: <span style="font-family:times;font-size:18px">text</span> content. Make with <code>&quot;&quot;</code> render brackets.</li>
+<li><code>math</code>: <img src="https://i.upmath.me/svg/%5Ccolor%7Bwhite%7Dmath" alt="\color{white}math" /> content. Make with <code>$$</code> render brackets.</li>
+<li><code>code</code>: <span style="font-family:consolas;font-size:16px;background:#CACACA;color:black;border-radius:5px;padding-left:4px;padding-right:4px;">code</span> content. Make with <code>``</code> render brackets.</li>
+<li><code>image</code>: Image content.</li>
+<li><code>graphic</code>: Vector graphic content.</li>
+<li><code>group</code>: Group of several snips (or more groups).</li>
+</ul>
