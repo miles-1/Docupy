@@ -1,4 +1,14 @@
+<!-- https://upmath.me/ to convert to html-->
+
 <style>
+    body {
+        font-family: 'Segoe UI';
+        background: #1E1E1E;
+        color: #D4D4D4;
+    }
+    code {
+        color: yellow;
+    }
     .rb {
         color: #4EC9B0;
     }
@@ -34,7 +44,7 @@
 
 ## Intro
 
-**Docupy** is a tex-like, function-based typesetting script language that impliments the following features:
+**Docupy** is a tex-like, function-based typesetting script language that implements the following features:
 
 - in-document python scripting for content generation
 - user-defined variables and functions
