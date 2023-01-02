@@ -1,9 +1,9 @@
 \setTextStyle[font=default | size=12 | emph=ef | color=black ]
 \setMathStyle[font=default | size=12 | emph=ef | color=black ]
 \setCodeStyle[font=default | size=12 | emph=ef | color=black ]
-\pageNumbers[type=numbers | start_num=0 | start_pg=1 | evens_only=False]
-\margins[left=1in | top=1in | right=1in | bottom=1in | even=1in | odd=1in | all=1in]
-\pageSize[size=default]
+\setPageNumbers[type=numbers | start_num=0 | start_pg=1 | evens_only=False]
+\setMargins[left=1in | top=1in | right=1in | bottom=1in | even=1in | odd=1in | all=1in]
+\setOutput[name="main" | type="pdf" | size=default]
 \importPackage[pkg=packageName]
 \importAll[script=my_script1.py]       # by default imported as \myScript1
 \myScript <- \importAll[script=my_script2.py]
@@ -12,7 +12,7 @@
 \myName <- \importFrom[func=my_function3 | script=my_script.py ]
 \myText <- \importFile[file=my_file.txt | type=text]
 \section <- \setArgs[func=section | **kwargs]
-\myVar2 <- {lorem epsum idk}
+\myVar2 <- "lorem epsum idk"
 \myMathVar <- $\frac{\pi | 2}$
 
 
@@ -21,13 +21,13 @@
 ## \pagebreak
 ## \hline
 
-## \n         (new line)
-## \n{}       (new line with input of num lines / distance in px)
-## \n{2}      (double new line, same as \\)
+## \\         (new line)
+## \\[]       (new line with input of num lines / distance in px)
+## \\[2]      (double new line, same as \\)
 ## \t         (tab/indent)
-## \t{}       (tabs with input of number of tabs)
+## \t[]       (tabs with input of number of tabs)
 ## \s         (preserved space)
-## \s{}       (space with input of num spaces / distance in px)
+## \s[]       (space with input of num spaces / distance in px)
 
 ## \bf{}      (bold, in whatever current mode)
 ## \it{}      (italicized, ")
@@ -61,7 +61,6 @@
 ## \strike[]{}
 ## \smallcaps{}
 ## \left{} \center{} \right{} \justified{}
-## \indent[]{}
 ## \runCode[render=False]{}
 
 ## \approx \ge \ne \le \gl \pm
@@ -74,7 +73,3 @@
 ## \equation[]{}
 ## \forall \in
 ## \cross[type | to]{}
-
-
-
-}
