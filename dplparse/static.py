@@ -47,6 +47,7 @@ doc_content = {
     "header": None,
     "footer": None,
     "body": None,
+    "repeat": None,
 }
 
 symbol_shorthands =  {
@@ -57,75 +58,14 @@ symbol_shorthands =  {
     "\\$": "\\dollar",              # replace  \$  with  \dollar
     "\\`": "\\backtick",            # replace  \`  with  \backtick
     "\\|": "\\pipe",                # replace  \|  with  \pipe
-    "\\[": "\\bracket[O]",          # replace  \[  with  \bracket[O]
-    "\\]": "\\bracket[C]",          # replace  \]  with  \bracket[C]
-    "\\{": "\\brace[O]",            # replace  \{  with  \brace[O]
-    "\\}": "\\brace[C]",            # replace  \}  with  \brace[C]
+    "\\[": "\\bracket[L]",          # replace  \[  with  \bracket[L]
+    "\\]": "\\bracket[R]",          # replace  \]  with  \bracket[R]
+    "\\{": "\\brace[L]",            # replace  \{  with  \brace[L]
+    "\\}": "\\brace[R]",            # replace  \}  with  \brace[R]
     "\\@": "\\atsymbol",            # replace  \@  with  \atatsymbol
     "\\#": "\\pound",               # replace  \#  with  \pound
+    "\\%": "\\percent",             # replace  \%  with  \percent
+    "\\!": "\\bang",                # replace  \%  with  \bang
 }
 
-types = (
-    "display",
-    "direction",
-    "position",
-    "symboltype",
-    "rendertype",
-    "imagetype",
-    "grouptype",
-    "nonetype",
-    "color",
-    "bool",
-    "int",
-    "float",
-    "array",
-    "ministr",
-)
-
-keywords = {
-    # display
-    "Inline": "display",
-    "Block": "display",
-    "InlineBlock": "display",
-    "Full": "display",
-    # directions
-    "N": "direction",
-    "S": "direction",
-    "E": "direction",
-    "W": "direction",
-    "NE": "direction",
-    "NW": "direction",
-    "SE": "direction",
-    "SW": "direction",
-    # positions
-    "L": "position",
-    "T": "position",
-    "R": "position",
-    "B": "position",
-    "M": "position",
-    "TL": "position",
-    "TR": "position",
-    "BL": "position",
-    "BR": "position",
-    "ML": "position",
-    "MR": "position",
-    # symboltypes
-    "O": "symboltype",
-    "C": "symboltype",
-    # rendertypes
-    "text": "rendertype",
-    "math": "rendertype",
-    "code": "rendertype",
-    # imagetype
-    "image": "imagetype",
-    "graphic": "imagetype",
-    # Nonetypes
-    "None": "nonetype",
-    # bools
-    "True": "bool",
-    "False": "bool",
-}
-
-math_symbols = (
-)
 
