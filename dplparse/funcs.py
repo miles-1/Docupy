@@ -1,61 +1,44 @@
-from os.path import basename
-from static import symbol_shorthands
-import re
+from syntax import gate_types, open_lids, close_lids, ministr_gate, escape, escape_regex
+from dptypes import getDPType, getDPLiteral, getDPFunc
+from classes import parse_str, nomatch
 from classes import DP_SyntaxError
-
-re.count = lambda pattern, string: len(re.findall(pattern, string))
-
-def parsedpl(file_contents):
-    render_gates = ("\"", "$", "`")
-    all_render_gates = tuple(f"(?<!{gate})" + gate*num + f"(?!{gate})" \
-                                for gate in render_gates for num in range(1,4))
-    lines = tuple(file_contents.split("\n"))
-    num_lines = len(lines)
-    current_num = 0
-    gates = []
-    while current_num < num_lines:
-        current_line = lines[current_num].strip()
-        if current_line[0] == "\\":
-            pass
+import re
 
 
 
 
-    # Replace symbol shorthands
-    for shorthand in symbol_shorthands.items():
-        file_contents = file_contents.replace(*shorthand)
-    # Replace render gates with corresponding tags
-    display_types = {
-        1: "inline",
-        2: "block",
-        3: "full"
-    }
-    
+
+def dpeval(string, namespace):
+    if isinstance(string, str):
+        lines = string.split("\n", string_only=True)
+        obj = parse_str(string)
+        result = _dpeval_recursive(obj, namespace)
+        if isinstance(result, tuple):
+            error_type, line_num, message = result
+            raise error_type(message, line_num, lines[line_num])
+        elif isinstance(result, list):
+            return result # TODO idek lol
+    else:
+        raise TypeError("Cannot evaluate nonstring.")
+
+def _dpeval_recursive(obj, namespace):
+    if isinstance(obj, parse_str):
+        commands = []
+        for line in obj.split(escape_regex):
+            if line[0] == escape:
+                pass
 
 
-def checkFunction(string, namespace):
-    if not re.match("\\\\[A-Za-z][A-Za-z0-9]+", string):
-        pass
+def countSymbols(string, regex, pre_indx, post_indx):
+    return re.count(regex, string[:pre_indx]) % 2 and re.count(regex, string[post_indx:]) % 2
 
-
-def getPkgName(pkgPath):
-    basename = basename(pkgPath)
-    re.split("[\-\_]", basename)
-
-def getGateRegex(gate, num):
-    escape = "\\" if gate == "$" else ""
-    return f"(?<!{escape}{gate})" + gate*num + f"(?!{gate})" + "|" + \
-        f"(?<=\\\\{escape}{gate})" + gate*num + f"(?!{gate})"
-
-def getArrayEntries(string):
+def getSepdEntries(string, convert_literals=True):
     pipes = tuple(i.start() for i in re.finditer("(?<!\\\\)\|", string))
     top_level_pipes = []
     for indx in pipes:
-        render_gates = ("\"", "$", "`")
-        all_render_gates = tuple(getGateRegex(gate, num) for gate in render_gates for num in range(1,4))
-        other_gates = (("[", "]"), ("{", "}"))
-        outside_render_gates = not any(re.count(gate_regex, string[:indx]) % 2 for gate_regex in all_render_gates)
-        outside_other_gates = all(string[:indx].count(brac[0]) == string[:indx].count(brac[1]) for brac in other_gates)
+
+        outside_render_gates = not any(countSymbols(string, gate_regex, indx, indx+1) for gate_regex in all_render_gates)
+        outside_other_gates = all(string[:indx].count(e[0]) == string[:indx].count(e[1]) for e in lid_enclosers)
         not_in_ministr = not re.count("(?<!\\\\)'", string[:indx]) % 2
         if outside_render_gates and outside_other_gates and not_in_ministr:
                 top_level_pipes.append(indx)
@@ -65,7 +48,7 @@ def getArrayEntries(string):
     return entries
 
 def getOptionArgs(string, line, line_num):
-    args = getArrayEntries(string)
+    args = getSepdEntries(string)
     option_dict = {}
     keyword_arg_started = False
     for num, arg in enumerate(args):
@@ -81,14 +64,4 @@ def getOptionArgs(string, line, line_num):
             option_dict[num] = value
         else:
             DP_SyntaxError("positional argument follows keyword argument", line_num, line)
-
-def parseOptionValue(value):
-    pass
-
-def typeIfNum(string):
-    string = re.sub("^-", "", string)
-    if re.match("^[0-9]+$", string):
-        return int
-    string = re.sub(".", "", string, 1)
-    if re.match("^[0-9]+$", string):
-        return float
+    return option_dict

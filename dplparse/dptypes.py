@@ -1,5 +1,7 @@
+from syntax import ministr_gate, color_prefix
+from classes import nomatch
+from dpfuncs import dpfunc
 import re
-from funcs import typeIfNum
 
 
 ############################################
@@ -13,7 +15,8 @@ class dptype:
         - DP uses ministr as wrapper for python's str.
         - DP uses array as wrapper for python's list, but it has fixed size unlike list.
     """
-    pass
+    string = None
+    string_location = None
 
 
 
@@ -130,7 +133,7 @@ class pattern_dptype(dptype):
     pass
 
 class color(pattern_dptype):
-    prefix = "#"
+    prefix = color_prefix
     possible_lengths = {6: "[A-Fa-f0-9]{6}", 8: "[A-Fa-f0-9]{8}"}
     def __init__(self, string):
         string = string.lower()
@@ -151,8 +154,9 @@ class color(pattern_dptype):
         pattern = color.possible_lengths[string_length]
         return re.match(pattern, string) != None
 
-class ministr(str, pattern_dptype):
-    gate = "'"
+class ministr(pattern_dptype):
+    gate = ministr_gate
+    regex = gate + "\.+" + gate
     def __init__(self, string):
         self.val = string
     @staticmethod
@@ -160,7 +164,7 @@ class ministr(str, pattern_dptype):
         if not all(string[i] == ministr.gate for i in (-1, 0)):
             return False
         string = string[1:-1]
-        return re.search(ministr.regex, str) == None
+        return re.search(ministr.regex, string) == None
 
 class array(list, pattern_dptype):
     left_gate = "["
@@ -168,6 +172,7 @@ class array(list, pattern_dptype):
     sep = "|"
     def __init__(self, string):
         self.val = string[1:-1].split(array.sep)
+        # TODO
     def __add__(self, array_2):
         if isinstance(array_2, array):
             return
@@ -202,36 +207,60 @@ for string, obj in local_namespace.items():
             for val in obj.possible_vals:
                 dptype_literals[val] = obj(val)
 
-def getDPtype(string):
-    string = string.strip()
-    if string in dptype_namespace and \
-        isinstance(dptype_namespace[string], type) or \
-        string in ("int", "float", "bool", "nonetype"):
-        return dptype
-    for dpt in dptype_namespace.values(): 
-        if hasattr(dpt, "isinstance") and dpt.isinstance(string):
-            return dpt
-    if string == "None":
-        return type(None)
-    if string in ("True", "False"):
-        return bool
-    return typeIfNum(string)
-    
-class dptypedict(dict):
-    def __init__(self, obj):
-        self.stringdict = dict(obj)
-        super().__init__(obj)
-    def __getitem__(self, string):
-        if isinstance(string, str):
-            if string in self.stringdict:
-                return self.stringdict[string]
-            if j := typeIfNum(string):
-                if j == int:
-                    return int(string)
-                elif j == float:
-                    return float(string)
-            raise TypeError(f"Cannot interpret string {string}")
-        else:
-            raise TypeError("Cannot accept nonstring.")
+class nomatch:
+    pass
 
-dptype_literals = dptypedict(dptype_literals)
+def _getNumDPType(string):
+    string = re.sub("^-", "", string)
+    if re.match("^[0-9]+$", string):
+        return int
+    string = re.sub(".", "", string, 1)
+    if re.match("^[0-9]+$", string):
+        return float
+    return nomatch
+
+def getDPType(string, namespace=None):
+    if isinstance(string, str):
+        string = string.strip()
+        if namespace and string in namespace:
+            return dpfunc
+        if string in dptype_namespace and \
+            isinstance(dptype_namespace[string], type) or \
+            string in ("int", "float", "bool", "nonetype"):
+            return dptype
+        for dpt in dptype_namespace.values(): 
+            if hasattr(dpt, "isinstance") and dpt.isinstance(string):
+                return dpt
+        if string == "None":
+            return type(None)
+        if string in ("True", "False"):
+            return bool
+        return _getNumDPType(string)
+    else:
+        raise TypeError("Cannot accept nonstring.")
+
+def getDPLiteral(string, namespace=None):
+    if isinstance(string, str):
+        if namespace and string in namespace:
+            return namespace[string]
+        if string in dptype_literals:
+            return dptype_literals[string]
+        if str_dptype := getDPType(string) and str_dptype not in (dpfunc, dptype):
+            if str_dptype == type(None):
+                return None
+            elif str_dptype == bool:
+                return string == "True"
+            else:
+                return str_dptype(string)
+        raise nomatch
+    else:
+        raise TypeError("Cannot accept nonstring.")
+
+def getDPFunc(string, namespace):
+    if isinstance(string, str):
+        if string in namespace:
+            return namespace[string]
+        else:
+            return nomatch
+    else:
+        raise TypeError(f"Cannot accept nonstring.")
